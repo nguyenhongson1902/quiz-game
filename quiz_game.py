@@ -15,10 +15,13 @@ def load_questions():
 def ask_question(question):
     print("Here is your question: ")
     print(question["Question"])
+    
     for i in range(0, 4) :
-        c = chr(ord("A") + i)
-        print(c + " " + question[c])
+        c = chr(ord('A') + i)
+        print(c + " " + question.iloc[i])
+
     ans = input("Enter your answer: ")
+    
     if question[ans] == question['Answer'] :
         print("Correct!!!!")
         print("The answer is: " + question['Answer'])
@@ -28,13 +31,24 @@ def ask_question(question):
         print("The answer is: " + question['Answer'])
         return 0
 
+def add_to_leaderboad(score):
+    leaderboard = pd.read_csv("./LeaderBoard.csv")
+    leaderboard = pd.DataFrame(leaderboard)
+    print("Congratulations!!!!")
+    name = input("Enter your name: ")
+    new_score = {"Name" : name, "Score" : score}
+    leaderboard = leaderboard.append(new_score, ignore_index = True)
+    leaderboard = leaderboard.sort_values(by='Score', ascending = False)
+    
+
+
 def run_quiz():
     questions_list = load_questions()
     score = 0
     for i in range(0, 5) :
         score += ask_question(questions_list[i])
 
-    print(score)
+    add_to_leaderboad(score)
 
 if __name__ == "__main__":
     run_quiz()
