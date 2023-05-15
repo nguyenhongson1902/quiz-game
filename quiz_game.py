@@ -3,6 +3,18 @@ import random
 
 data = pd.read_csv("./quiz_questions.csv")
 data.rename(columns={'Option 1': 'A', 'Option 2': 'B', 'Option 3' : 'C', 'Option 4' : 'D'}, inplace=True)
+lb = pd.read_csv("./leaderboard.csv")
+score = 0
+
+def add_leaderboard():
+    print("Congratulation!!!!")
+    print("Your score is: ", score)
+    firstname = input("Enter your first name: ")
+    lastname = input("Enter your last name: ")
+    row = pd.Series([firstname, lastname, score], index=lb.columns)
+    lb = lb.append(row, ignore_index=True)
+    lb = lb.sort_values('Highscore')
+    lb.to_csv('./leaderboard.csv', index=False)
 
 def load_questions():
     num_question = len(data.index)
@@ -15,13 +27,10 @@ def load_questions():
 def ask_question(question):
     print("Here is your question: ")
     print(question["Question"])
-    
     for i in range(0, 4) :
-        c = chr(ord('A') + i)
-        print(c + " " + question.iloc[i])
-
+        c = chr(ord("A") + i)
+        print(c + " " + question[c])
     ans = input("Enter your answer: ")
-    
     if question[ans] == question['Answer'] :
         print("Correct!!!!")
         print("The answer is: " + question['Answer'])
@@ -31,24 +40,12 @@ def ask_question(question):
         print("The answer is: " + question['Answer'])
         return 0
 
-def add_to_leaderboad(score):
-    leaderboard = pd.read_csv("./LeaderBoard.csv")
-    leaderboard = pd.DataFrame(leaderboard)
-    print("Congratulations!!!!")
-    name = input("Enter your name: ")
-    new_score = {"Name" : name, "Score" : score}
-    leaderboard = leaderboard.append(new_score, ignore_index = True)
-    leaderboard = leaderboard.sort_values(by='Score', ascending = False)
-    
-
-
 def run_quiz():
     questions_list = load_questions()
-    score = 0
     for i in range(0, 5) :
         score += ask_question(questions_list[i])
 
-    add_to_leaderboad(score)
+    add_leaderboard()
 
 if __name__ == "__main__":
     run_quiz()
