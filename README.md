@@ -1,0 +1,5 @@
+- Use pandas to process the csv file.
+- Use random to randomize the questions.
+- load_questions() return a List of Questions
+- ask_questions() return Point.
+- add_leaderboard() add the score to the leaderboard.
