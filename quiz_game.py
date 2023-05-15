@@ -4,9 +4,9 @@ import random
 data = pd.read_csv("./quiz_questions.csv")
 data.rename(columns={'Option 1': 'A', 'Option 2': 'B', 'Option 3' : 'C', 'Option 4' : 'D'}, inplace=True)
 lb = pd.read_csv("./leaderboard.csv")
-score = 0
 
-def add_leaderboard():
+def add_leaderboard(score):
+    lb = pd.read_csv("./leaderboard.csv")
     print("Congratulation!!!!")
     print("Your score is: ", score)
     firstname = input("Enter your first name: ")
@@ -42,10 +42,11 @@ def ask_question(question):
 
 def run_quiz():
     questions_list = load_questions()
+    score = 0;
     for i in range(0, 5) :
         score += ask_question(questions_list[i])
 
-    add_leaderboard()
+    add_leaderboard(score)
 
 if __name__ == "__main__":
     run_quiz()
